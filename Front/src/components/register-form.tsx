@@ -20,33 +20,98 @@ const useStyles = makeStyles((theme) => ({
 }))
 export function RegisterForm():JSX.Element{
     const classes = useStyles();
+    const [loginDirty, setLoginDirty] = useState(false);
+    const [loginError, setLoginError] = useState('');
+
+    const [passwordDirty, setPasswordDirty] = useState(false);
+    const [passwordError, setPasswordError] = useState('');
+
+    const [password2Dirty, setPassword2Dirty] = useState(false);
+    const [password2Error, setPassword2Error] = useState('');
+
     const [formData, changeForm] = useState<{login: string; password: string, password2: string}>({
         login: '', password: '', password2: ''
     })
 
     const handleLogin = (evt: React.ChangeEvent<HTMLInputElement>) => {
         changeForm({...formData, login: evt.target.value});
+        setLoginDirty(false);
     }
-
     const handlePassword = (evt: React.ChangeEvent<HTMLInputElement>) => {
         changeForm({...formData, password: evt.target.value});
+        setPasswordDirty(false);
     }
 
     const handlePassword2 = (evt: React.ChangeEvent<HTMLInputElement>) => {
         changeForm({...formData, password2: evt.target.value});
+        setPassword2Dirty(false);
     }
 
     const handleSubmit = () => {
         console.log(formData);
+        isLoginEmptyChecking();
+        isPasswordEmptyChecking();
+        isPasswordShortChecking();
+        isPasswordEqualChecking();
+    }
+
+    const isLoginEmptyChecking = () => {
+        if(formData.login === ''){
+            setLoginError('Поле Логин не должно быть пустым')
+            setLoginDirty(true);
+        }
+    }
+    const isPasswordEmptyChecking = () => {
+        if(formData.password === ''){
+            setPasswordError('Поле Пароль не должно быть пустым')
+            setPasswordDirty(true);
+        }
+    }
+
+    const isPasswordEqualChecking = () => {
+        if(formData.password !== formData.password2){
+            setPassword2Error('Пароли не совпадают')
+            setPassword2Dirty(true);
+        }
+    }
+
+    const isPasswordShortChecking = () => {
+        if(formData.password.length > 0 && formData.password.length <= 5){
+            setPasswordError('Слишком короткий пароль')
+            setPasswordDirty(true);            
+        }
+    }
+    const blurHandler = (e : React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+        switch(e.target.name){
+            case 'login':
+                isLoginEmptyChecking();
+                break   
+            case 'password':
+                isPasswordEmptyChecking();
+                isPasswordShortChecking();
+                break
+            case 'password2':
+                isPasswordEqualChecking();
+        }
     }
 
     return(
     <Paper  className={classes.loginForm} elevation={12} sx={{borderRadius:'15px'}}>
         <div style={{ textAlign:'center'}} className='black'>
             <Typography variant="h3" sx={{ textAlign:'center', marginBottom:"5%"}}>Регистрация</Typography>
-            <TextField variant="outlined" label='Логин' placeholder="Введите логин" className={classes.textFieldForm} sx={{marginBottom:'5%'}} onChange={handleLogin}/>
-            <TextField variant="outlined" label='Пароль' placeholder="Введите пароль" className={classes.textFieldForm} type='password' sx={{marginBottom:'5%'}} onChange={handlePassword}/><br/>
-            <TextField variant="outlined" label='Повторите пароль' placeholder="Введите пароль" className={classes.textFieldForm} type='password' sx={{marginBottom:'5%'}} onChange={handlePassword2}/><br/>
+            <TextField variant="outlined" label='Логин' placeholder="Введите логин" 
+                className={classes.textFieldForm} sx={{marginBottom:'5%'}} onChange={handleLogin}
+                onBlur={e => blurHandler(e)} name='login' error={loginDirty} helperText={loginDirty ? loginError : ''}/>
+
+            <TextField variant="outlined" label='Пароль' placeholder="Введите пароль" className={classes.textFieldForm} 
+            type='password' sx={{marginBottom:'5%'}} onChange={handlePassword} name='password' onBlur={(e) => blurHandler(e)} 
+            error={passwordDirty} helperText={passwordDirty ? passwordError : ''}/><br/>
+
+            <TextField variant="outlined" label='Повторите пароль' placeholder="Введите пароль" className={classes.textFieldForm} 
+            type='password' sx={{marginBottom:'5%'}} onChange={handlePassword2} name='password2' onBlur={(e) => blurHandler(e)} 
+            error={password2Dirty} helperText={password2Dirty ? password2Error : ''}/><br/>
+
+            {/* <TextField variant="outlined" label='Повторите пароль' placeholder="Введите пароль" className={classes.textFieldForm} type='password' sx={{marginBottom:'5%'}} onChange={handlePassword2}/><br/> */}
             <Button variant='contained' color='secondary' size='large'  endIcon={<SendIcon />} onClick={handleSubmit}>Зарегистрироваться</Button>
         </div>
     </Paper>

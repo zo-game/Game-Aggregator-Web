@@ -24,27 +24,73 @@ const useStyles = makeStyles((theme) => ({
 }))
 export function LoginForm():JSX.Element{
     const classes = useStyles();
+    const [loginDirty, setLoginDirty] = useState(false);
+    const [loginError, setLoginError] = useState('');
+
+    const [passwordDirty, setPasswordDirty] = useState(false);
+    const [passwordError, setPasswordError] = useState('');
     const [formData, changeForm] = useState<{login: string; password: string}>({
         login: '', password: ''
     })
 
     const handleLogin = (evt: React.ChangeEvent<HTMLInputElement>) => {
         changeForm({...formData, login: evt.target.value});
+        setLoginDirty(false);
     }
     const handlePassword = (evt: React.ChangeEvent<HTMLInputElement>) => {
         changeForm({...formData, password: evt.target.value});
+        setPasswordDirty(false);
     }
 
     const handleSubmit = () => {
         console.log(formData);
+        isLoginEmptyChecking();
+        isPasswordEmptyChecking();
+        isPasswordShortChecking();
+    }
+
+    const blurHandler = (e : React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+        switch(e.target.name){
+            case 'login':
+                isLoginEmptyChecking();
+                break   
+            case 'password':
+                isPasswordEmptyChecking();
+                isPasswordShortChecking();
+                break
+        }
+    }
+    const isLoginEmptyChecking = () => {
+        if(formData.login === ''){
+            setLoginError('Поле Логин не должно быть пустым')
+            setLoginDirty(true);
+        }
+    }
+    const isPasswordEmptyChecking = () => {
+        if(formData.password === ''){
+            setPasswordError('Поле Пароль не должно быть пустым')
+            setPasswordDirty(true);
+        }
+    }
+    const isPasswordShortChecking = () => {
+        if(formData.password.length > 0 && formData.password.length <= 5){
+            setPasswordError('Слишком короткий пароль')
+            setPasswordDirty(true);            
+        }
     }
 
     return(
     <Paper  className={classes.loginForm} elevation={12} sx={{borderRadius:'15px'}}>
         <div style={{ textAlign:'center'}} className='black'>
             <Typography variant="h3" sx={{ textAlign:'center', marginBottom:"5%"}}>Авторизация</Typography>
-            <TextField variant="outlined" label='Login' placeholder="Введите логин" className={classes.textFieldForm} sx={{marginBottom:'5%'}} onChange={handleLogin}/>
-            <TextField variant="outlined" label='Password' placeholder="Введите пароль" className={classes.textFieldForm} type='password' sx={{marginBottom:'5%'}} onChange={handlePassword}/><br/>
+            <TextField variant="outlined" label='Логин' placeholder="Введите логин" 
+                className={classes.textFieldForm} sx={{marginBottom:'5%'}} onChange={handleLogin}
+                onBlur={e => blurHandler(e)} name='login' error={loginDirty} helperText={loginDirty ? loginError : ''}/>
+
+            <TextField variant="outlined" label='Пароль' placeholder="Введите пароль" className={classes.textFieldForm} 
+            type='password' sx={{marginBottom:'5%'}} onChange={handlePassword} name='password' onBlur={(e) => blurHandler(e)} 
+            error={passwordDirty} helperText={passwordDirty ? passwordError : ''}/><br/>
+
             <Button variant='contained' color='secondary' size='large'  endIcon={<SendIcon />} onClick={handleSubmit}>Войти</Button><br/><br/>
             <Link underline='hover' href='/registration'>Еще нет учетной записи</Link>
         </div>
