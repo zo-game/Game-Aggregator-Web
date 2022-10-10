@@ -2,6 +2,8 @@ import { makeStyles } from "@mui/styles";
 import {Paper, Typography, TextField, Button} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import {useState} from 'react';
+import { Link } from '@mui/material';
+
 // import ChangeEventHa
 
 
@@ -10,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     {
         position:'fixed',
         width: '30%',
-        height: '50%',
+        height: '55%',
         left: '35%',
         top: '15%',
         padding: '2vh 2vw 1vh 2vw',        
@@ -38,12 +40,13 @@ export function LoginForm():JSX.Element{
     }
 
     return(
-    <Paper  className={classes.loginForm} elevation={12}>
+    <Paper  className={classes.loginForm} elevation={12} sx={{borderRadius:'15px'}}>
         <div style={{ textAlign:'center'}} className='black'>
             <Typography variant="h3" sx={{ textAlign:'center', marginBottom:"5%"}}>Авторизация</Typography>
             <TextField variant="outlined" label='Login' placeholder="Введите логин" className={classes.textFieldForm} sx={{marginBottom:'5%'}} onChange={handleLogin}/>
             <TextField variant="outlined" label='Password' placeholder="Введите пароль" className={classes.textFieldForm} type='password' sx={{marginBottom:'5%'}} onChange={handlePassword}/><br/>
-            <Button variant='contained' color='secondary' size='large'  endIcon={<SendIcon />} onClick={handleSubmit}>Отправить</Button>
+            <Button variant='contained' color='secondary' size='large'  endIcon={<SendIcon />} onClick={handleSubmit}>Войти</Button><br/><br/>
+            <Link underline='hover' href='/registration'>Еще нет учетной записи</Link>
         </div>
     </Paper>
     )
