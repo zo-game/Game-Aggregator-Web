@@ -1,7 +1,9 @@
 import { AppBar, Button, Toolbar, Typography, Box, Tabs, Tab} from '@mui/material';
 import { Container } from '@mui/system';
 import {makeStyles} from '@mui/styles';
-import { LoginForm } from './login-form';
+import {Outlet, useNavigate} from 'react-router-dom';
+import {useState} from 'react';
+
 
 const useStyles = makeStyles((theme) => ({
     navbar: {
@@ -12,19 +14,26 @@ const useStyles = makeStyles((theme) => ({
 
 type MenuLink = {
     link: string,
-    name: string
+    name: string,
+    num: number
 }
 
 const menuLinks : MenuLink[] = [
-    {link: '#', name: 'Главная'},
-    {link: '#', name: 'Подбор тиммейтов'},
-    {link: '#', name: 'Поддержка'},
+    {link: '/', name: 'Главная', num: 0},
+    {link: '#', name: 'Подбор тиммейтов', num: 1},
+    {link: '#', name: 'Поддержка', num: 2},
 ]
 
 
 
 export function Navbar():JSX.Element{
     const classes = useStyles();
+    const navigate = useNavigate();
+    const [currentTab, changeTab] = useState(0);
+    const handleTabClick = (tab: MenuLink) => {
+        navigate(tab.link);
+        changeTab(tab.num);
+    }
     return(<>
             <AppBar className={classes.navbar}>
                 <Container fixed>
@@ -37,18 +46,18 @@ export function Navbar():JSX.Element{
                             marginRight: '5%'
                             }}>Game Aggregator</Typography>
 
-                            <Tabs textColor='inherit' value={0} indicatorColor='secondary'>
+                            <Tabs textColor='inherit' value={currentTab} indicatorColor='secondary'>
                                 {menuLinks.map((item) => 
-                                    <Tab label={item.name} key={item.name} href={item.link}/>
+                                    <Tab label={item.name} key={item.name}  onClick={() => handleTabClick(item)}/>
                                 )}
                             </Tabs>
                         <Box sx={{position: 'absolute', right: '-150px'}}>
-                            <Button color='inherit' variant='outlined' style={{marginRight: '1vw'}}>Войти</Button>
+                            <Button color='inherit' variant='outlined' style={{marginRight: '1vw'}} onClick={() => navigate('login')}>Войти</Button>
                             <Button color='inherit' variant='outlined'>Регистрация</Button>                            
                         </Box>
                     </Toolbar>
                 </Container>
             </AppBar>
-                <LoginForm/>
+                <Outlet />
         </>)
 }
