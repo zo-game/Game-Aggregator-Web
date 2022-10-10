@@ -1,4 +1,5 @@
 import { AppBar, Button, Toolbar, Typography, Box, Tabs, Tab} from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
 import { Container } from '@mui/system';
 import {makeStyles} from '@mui/styles';
 import {Outlet, useNavigate} from 'react-router-dom';
@@ -20,8 +21,8 @@ type MenuLink = {
 
 const menuLinks : MenuLink[] = [
     {link: '/', name: 'Главная', num: 0},
-    {link: '#', name: 'Подбор тиммейтов', num: 1},
-    {link: '#', name: 'Поддержка', num: 2},
+    {link: '/', name: 'Подбор тиммейтов', num: 1},
+    {link: '/', name: 'Поддержка', num: 2},
 ]
 
 
@@ -29,10 +30,16 @@ const menuLinks : MenuLink[] = [
 export function Navbar():JSX.Element{
     const classes = useStyles();
     const navigate = useNavigate();
-    const [currentTab, changeTab] = useState(0);
+    const [currentTab, changeTab] = useState<number | boolean>(0);
+    
     const handleTabClick = (tab: MenuLink) => {
         navigate(tab.link);
         changeTab(tab.num);
+    }
+
+    const buttonClick = (href: string) => {
+        navigate(href);
+        changeTab(false);
     }
     return(<>
             <AppBar className={classes.navbar}>
@@ -52,8 +59,8 @@ export function Navbar():JSX.Element{
                                 )}
                             </Tabs>
                         <Box sx={{position: 'absolute', right: '-150px'}}>
-                            <Button color='inherit' variant='outlined' style={{marginRight: '1vw'}} onClick={() => navigate('login')}>Войти</Button>
-                            <Button color='inherit' variant='outlined'>Регистрация</Button>                            
+                            <Button color='inherit' variant='outlined' style={{marginRight: '1vw'}} onClick={() => buttonClick('login')} endIcon={<LoginIcon/>}>Войти</Button>
+                            <Button color='inherit' variant='outlined' onClick={() => buttonClick('registration')}>Регистрация</Button>                            
                         </Box>
                     </Toolbar>
                 </Container>
