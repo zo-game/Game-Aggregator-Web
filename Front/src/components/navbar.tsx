@@ -4,11 +4,13 @@ import { Container } from '@mui/system';
 import {makeStyles} from '@mui/styles';
 import {Outlet, useNavigate} from 'react-router-dom';
 import {useState} from 'react';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Slide from '@mui/material/Slide';
 
 
 const useStyles = makeStyles((theme) => ({
     navbar: {
-       background: 'linear-gradient(45deg, #000 30%, #000 90%)'    
+       background: 'linear-gradient(45deg, #000 30%, #000 90%)',       
     },
   
   }))
@@ -20,7 +22,7 @@ type MenuLink = {
 }
 
 const menuLinks : MenuLink[] = [
-    {link: '/', name: 'Главная', num: 0},
+    {link: 'main', name: 'Главная', num: 0},
     {link: '/', name: 'Подбор тиммейтов', num: 1},
     {link: '/', name: 'Поддержка', num: 2},
 ]
@@ -28,6 +30,9 @@ const menuLinks : MenuLink[] = [
 
 
 export function Navbar():JSX.Element{
+    const trigger = useScrollTrigger({
+        disableHysteresis: true,
+        threshold: 0});
     const classes = useStyles();
     const navigate = useNavigate();
     const [currentTab, changeTab] = useState<number | boolean>(0);
@@ -42,7 +47,8 @@ export function Navbar():JSX.Element{
         changeTab(false);
     }
     return(<>
-            <AppBar className={classes.navbar}>
+        <Slide in={!trigger} >
+            <AppBar className={classes.navbar} >
                 <Container fixed>
                     <Toolbar>
                         <Typography variant='h5' 
@@ -65,6 +71,8 @@ export function Navbar():JSX.Element{
                     </Toolbar>
                 </Container>
             </AppBar>
+
+        </Slide>
                 <Outlet />
         </>)
 }
