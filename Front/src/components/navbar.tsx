@@ -6,8 +6,9 @@ import {Outlet, useNavigate} from 'react-router-dom';
 import React, {useState} from 'react';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
-
-
+import HelpIcon from '@mui/icons-material/Help';
+import HomeIcon from '@mui/icons-material/Home';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,17 +18,18 @@ const useStyles = makeStyles((theme) => ({
   
   }))
 
-type MenuLink = {
-    link: string,
-    name: string,
-    num: number
-}
+// type MenuLink = {
+//     link: string,
+//     name: string,
+//     num: number,
+//     icon: JSX.Element
+// }
 
-const menuLinks : MenuLink[] = [
-    {link: 'main', name: 'Главная', num: 0},
-    {link: '/', name: 'Подбор тиммейтов', num: 1},
-    {link: '/', name: 'Поддержка', num: 2},
-]
+// const menuLinks : MenuLink[] = [
+//     {link: 'main', name: 'Главная', num: 0, icon: <HelpIcon/>},
+//     {link: '/', name: 'Подбор тиммейтов', num: 1, icon: <HelpIcon/>},
+//     {link: '/', name: 'Поддержка', num: 2, icon: <HelpIcon/>},
+// ]
 
 
 
@@ -40,9 +42,9 @@ export function Navbar():JSX.Element{
     const navigate = useNavigate();
     const [currentTab, changeTab] = useState<number | boolean>(0);
     
-    const handleTabClick = (tab: MenuLink) => {
-        navigate(tab.link);
-        changeTab(tab.num);
+    const handleTabClick = (link: string, num: number) => {
+        navigate(link);
+        changeTab(num);
     }
 
     const buttonClick = (href: string) => {
@@ -63,9 +65,16 @@ export function Navbar():JSX.Element{
                             }}>Game Aggregator</Typography>
 
                             <Tabs textColor='inherit' value={currentTab} indicatorColor='secondary'>
-                                {menuLinks.map((item) => 
-                                    <Tab label={item.name} key={item.name}  onClick={() => handleTabClick(item)}/>
-                                )}
+                                    <Tab icon={<HomeIcon color={currentTab !==0 ? 'inherit' : "secondary"}/>}
+                                         iconPosition={'end'} label={"Главная"} onClick={() => handleTabClick('main', 0)}/>
+                                    <Tab label={"Поддержка"}   onClick={() => handleTabClick('/', 1)}
+                                         icon={<HelpIcon color={currentTab !==1 ? 'inherit' : "secondary"}/>}
+                                         iconPosition={"end"}/>
+                                    <Tab icon={<LocalOfferIcon color={currentTab !==2 ? 'inherit' : "secondary"}/>}
+                                         iconPosition={"end"} label={"Магазин игр"}   onClick={() => handleTabClick('/', 2)}/>
+
+                                {/*{menuLinks.map((item) => */}
+                                {/*)}*/}
                             </Tabs>
                         <Box sx={{position: 'absolute', right: '-150px'}}>
                             <Button color='inherit' variant='outlined' style={{marginRight: '1vw'}} onClick={() => buttonClick('login')} endIcon={<LoginIcon/>}>Войти</Button>
