@@ -3,9 +3,11 @@ import LoginIcon from '@mui/icons-material/Login';
 import { Container } from '@mui/system';
 import {makeStyles} from '@mui/styles';
 import {Outlet, useNavigate} from 'react-router-dom';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +32,7 @@ const menuLinks : MenuLink[] = [
 
 
 export function Navbar():JSX.Element{
+
     const trigger = useScrollTrigger({
         disableHysteresis: true,
         threshold: 0});

@@ -1,11 +1,13 @@
 import { makeStyles } from "@mui/styles";
 import {Paper, Typography, TextField, Button} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import { Link } from '@mui/material';
-
-// import ChangeEventHa
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import {InputProps} from "@mui/material";
+import {InputAdornment} from "@mui/material";
+import {IconButton} from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     loginForm: 
@@ -24,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 export function LoginForm():JSX.Element{
     const classes = useStyles();
+    const [isPassNotVisible, setPassVisible] = useState(true);
+
     const [loginDirty, setLoginDirty] = useState(false);
     const [loginError, setLoginError] = useState('');
 
@@ -87,9 +91,34 @@ export function LoginForm():JSX.Element{
                 className={classes.textFieldForm} sx={{marginBottom:'5%'}} onChange={handleLogin}
                 onBlur={e => blurHandler(e)} name='login' error={loginDirty} helperText={loginDirty ? loginError : ''}/>
 
+
+
             <TextField variant="outlined" label='Пароль' placeholder="Введите пароль" className={classes.textFieldForm} 
-            type='password' sx={{marginBottom:'5%'}} onChange={handlePassword} name='password' onBlur={(e) => blurHandler(e)} 
-            error={passwordDirty} helperText={passwordDirty ? passwordError : ''}/><br/>
+            type={isPassNotVisible ? 'password' : 'text'} sx={{marginBottom:'5%'}} onChange={handlePassword}
+                       name='password' onBlur={(e) => blurHandler(e)}
+            error={passwordDirty} helperText={passwordDirty ? passwordError : ''} style={{ }}
+                       InputProps={{
+                           endAdornment: (
+                               <InputAdornment position="end">
+
+                                        <IconButton aria-label="toggle password"
+                                                   edge="end"
+                                                    onClick={(e)=> { setPassVisible(!isPassNotVisible)
+                                                    }}
+                                        >
+                                            {
+                                                isPassNotVisible
+                                                    ? <VisibilityOffIcon color={"disabled"}
+                                                                         sx={{fontSize: 30, paddingLeft: 0}}/>
+                                                    : <VisibilityIcon color={"secondary"}
+                                                                      sx={{fontSize: 30, paddingLeft: 0}}/>
+                                            }
+                                        </IconButton>
+                               </InputAdornment>
+                           )
+                       }}
+            />
+            <br/>
 
             <Button variant='contained' color='secondary' size='large'  endIcon={<SendIcon />} onClick={handleSubmit}>Войти</Button><br/><br/>
             <Link underline='hover' href='/registration'>Еще нет учетной записи</Link>
