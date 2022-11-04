@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles";
 import {Paper, Typography, TextField, Button} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import {useState} from 'react';
+import { registration } from "../api/send-api-action";
 
 const useStyles = makeStyles((theme) => ({
     loginForm: 
@@ -52,7 +53,9 @@ export function RegisterForm():JSX.Element{
         isLoginEmptyChecking();
         isPasswordEmptyChecking();
         isPasswordShortChecking();
-        isPasswordEqualChecking();
+        isPasswordEqualChecking();//
+        
+        registration(formData.login, formData.password);
     }
 
     const isLoginEmptyChecking = () => {
