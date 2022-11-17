@@ -1,10 +1,5 @@
 import axious from 'axios';
 
-// type AuthData = {
-//     login: string,
-//     password: string, 
-//     url: string
-// }
 
 export const registration = async (login: string, password: string) => {
     try{
@@ -19,16 +14,3 @@ export const registration = async (login: string, password: string) => {
     }
 
 }
-
-// export default function SendData(password, login, url) : void{
-//     const message =async () => {
-//         try{
-//             let res = await axious.get(url);
-//             let result = res.data;
-//         }
-//         catch(error){
-//             console.log(error);
-//         }
-        
-//     }
-// }

@@ -18,21 +18,6 @@ const useStyles = makeStyles((theme) => ({
   
   }))
 
-// type MenuLink = {
-//     link: string,
-//     name: string,
-//     num: number,
-//     icon: JSX.Element
-// }
-
-// const menuLinks : MenuLink[] = [
-//     {link: 'main', name: 'Главная', num: 0, icon: <HelpIcon/>},
-//     {link: '/', name: 'Подбор тиммейтов', num: 1, icon: <HelpIcon/>},
-//     {link: '/', name: 'Поддержка', num: 2, icon: <HelpIcon/>},
-// ]
-
-
-
 export function Navbar():JSX.Element{
 
     const trigger = useScrollTrigger({
@@ -71,10 +56,7 @@ export function Navbar():JSX.Element{
                                          icon={<HelpIcon color={currentTab !==1 ? 'inherit' : "secondary"}/>}
                                          iconPosition={"end"}/>
                                     <Tab icon={<LocalOfferIcon color={currentTab !==2 ? 'inherit' : "secondary"}/>}
-                                         iconPosition={"end"} label={"Магазин игр"}   onClick={() => handleTabClick('/', 2)}/>
-
-                                {/*{menuLinks.map((item) => */}
-                                {/*)}*/}
+                                         iconPosition={"end"} label={"Магазин игр"}   onClick={() => handleTabClick('shop', 2)}/>
                             </Tabs>
                         <Box sx={{position: 'absolute', right: '-150px'}}>
                             <Button color='inherit' variant='outlined' style={{marginRight: '1vw'}} onClick={() => buttonClick('login')} endIcon={<LoginIcon/>}>Войти</Button>
@@ -83,7 +65,6 @@ export function Navbar():JSX.Element{
                     </Toolbar>
                 </Container>
             </AppBar>
-
         </Slide>
                 <Outlet />
         </>)
