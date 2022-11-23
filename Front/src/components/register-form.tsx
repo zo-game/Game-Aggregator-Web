@@ -1,7 +1,10 @@
 import { makeStyles } from "@mui/styles";
-import {Paper, Typography, TextField, Button} from '@mui/material';
+import {Paper, Typography, TextField, Button, InputAdornment, IconButton} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import {useState} from 'react';
+import { registration } from "../api/send-api-action";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const useStyles = makeStyles((theme) => ({
     loginForm: 
@@ -20,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 export function RegisterForm():JSX.Element{
     const classes = useStyles();
+    const [isPassVisible, setPassVisible] = useState(false);
+    const [isPassRepeatVisible, setPassRepeatVisible] = useState(false);
+
     const [loginDirty, setLoginDirty] = useState(false);
     const [loginError, setLoginError] = useState('');
 
@@ -52,7 +58,9 @@ export function RegisterForm():JSX.Element{
         isLoginEmptyChecking();
         isPasswordEmptyChecking();
         isPasswordShortChecking();
-        isPasswordEqualChecking();
+        isPasswordEqualChecking();//
+        
+        registration(formData.login, formData.password);
     }
 
     const isLoginEmptyChecking = () => {
@@ -104,12 +112,52 @@ export function RegisterForm():JSX.Element{
                 onBlur={e => blurHandler(e)} name='login' error={loginDirty} helperText={loginDirty ? loginError : ''}/>
 
             <TextField variant="outlined" label='Пароль' placeholder="Введите пароль" className={classes.textFieldForm} 
-            type='password' sx={{marginBottom:'5%'}} onChange={handlePassword} name='password' onBlur={(e) => blurHandler(e)} 
-            error={passwordDirty} helperText={passwordDirty ? passwordError : ''}/><br/>
+            type={isPassVisible ? 'text' : 'password'} sx={{marginBottom:'5%'}} onChange={handlePassword} name='password' onBlur={(e) => blurHandler(e)}
+            error={passwordDirty} helperText={passwordDirty ? passwordError : ''}
+                       InputProps={{
+                           endAdornment: (
+                               <InputAdornment position="end">
+
+                                   <IconButton aria-label="toggle password"
+                                               edge="end"
+                                               onClick={(e)=> { setPassVisible(!isPassVisible)
+                                               }}
+                                   >
+                                       {
+                                           !isPassVisible
+                                               ? <VisibilityOffIcon color={"disabled"}
+                                                                    sx={{fontSize: 30, paddingLeft: 0}}/>
+                                               : <VisibilityIcon color={"secondary"}
+                                                                 sx={{fontSize: 30, paddingLeft: 0}}/>
+                                       }
+                                   </IconButton>
+                               </InputAdornment>
+                           )
+                       }}/><br/>
 
             <TextField variant="outlined" label='Повторите пароль' placeholder="Введите пароль" className={classes.textFieldForm} 
-            type='password' sx={{marginBottom:'5%'}} onChange={handlePassword2} name='password2' onBlur={(e) => blurHandler(e)} 
-            error={password2Dirty} helperText={password2Dirty ? password2Error : ''}/><br/>
+            type={isPassRepeatVisible ? 'text' : 'password'} sx={{marginBottom:'5%'}} onChange={handlePassword2} name='password2' onBlur={(e) => blurHandler(e)}
+            error={password2Dirty} helperText={password2Dirty ? password2Error : ''}
+                       InputProps={{
+                           endAdornment: (
+                               <InputAdornment position="end">
+
+                                   <IconButton aria-label="toggle password"
+                                               edge="end"
+                                               onClick={(e)=> { setPassRepeatVisible(!isPassRepeatVisible)
+                                               }}
+                                   >
+                                       {
+                                           !isPassRepeatVisible
+                                               ? <VisibilityOffIcon color={"disabled"}
+                                                                    sx={{fontSize: 30, paddingLeft: 0}}/>
+                                               : <VisibilityIcon color={"secondary"}
+                                                                 sx={{fontSize: 30, paddingLeft: 0}}/>
+                                       }
+                                   </IconButton>
+                               </InputAdornment>
+                           )
+                       }}/><br/>
 
             {/* <TextField variant="outlined" label='Повторите пароль' placeholder="Введите пароль" className={classes.textFieldForm} type='password' sx={{marginBottom:'5%'}} onChange={handlePassword2}/><br/> */}
             <Button variant='contained' color='secondary' size='large'  endIcon={<SendIcon />} onClick={handleSubmit}>Зарегистрироваться</Button>
