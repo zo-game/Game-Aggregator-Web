@@ -37,6 +37,7 @@
   }
 }
 
-/* .text-field-form.MuiOutlinedInput-input.MuiInputBase-input{
-  margin-top: '20%' !important;
-} */
+@font-face {
+  font-family: 'Dela Gothic One';
+  src: local('Dela Gothic One'), url(./fonts/DelaGothicOne-Regular.woff) format('woff');
+}
