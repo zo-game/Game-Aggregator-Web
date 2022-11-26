@@ -4,10 +4,10 @@ import {useState} from "react";
 export const getGames = async () => {
 
     // const url = 'https://api.steampowered.com/ISteamApps/GetAppList/v1/?maxlength=30';
-    const url = 'https://store.steampowered.com/api/appdetails?appids=57690';
-    const games = await axios.get(url, {
-
-    });
+    // const url = 'https://store.steampowered.com/api/appdetails?appids=57690';
+    // const games = await axios.get(url, {
+    //
+    // });
 
     // console.log(games)
 
